@@ -25,7 +25,7 @@ const wallet__data = [
   },
 
   {
-    title: "Authereum",
+    title: "Euthereum",
     desc: "'Simply, the best Web3 experience at your fingertips.' Authereum is dedicated to those who wish to dive into Ethereum.",
     icon: "ri-bit-coin-line",
   },
