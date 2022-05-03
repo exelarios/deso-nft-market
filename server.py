@@ -16,11 +16,14 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 nfts = db["nfts"]
 
-baseURL = "http://localhost:18001/api/v0"
+# DeSo Node
+deso_node_URL = "http://localhost:" + os.environ.get("DESO_PORT")
+baseURL = deso_node_URL + "/api/v0"
+# http://localhost:18001/api/v0/
 
 @app.route("/")
 def index():
-  return "DeSo backend is running."
+  return "DeSo proxy backend is running."
 
 # Great way to check if the deso-node server is working.
 @app.route("/api/get-exchange-rate")
@@ -28,13 +31,23 @@ def get_exchange_rate():
   rates = requests.get(baseURL + "/get-exchange-rate")
   return jsonify(rates.json())
 
+@app.route("/api/get-single-profile", methods=["POST"])
+def get_single_profile():
+  profile = requests.get(baseURL + "/get-single-profile")
+  print(profile)
+  return jsonify(profile.json())
+
 @app.route("/api/submit-post", methods=["POST"])
 def submit_post():
   if request.method == "POST":
     print(request.json)
-    return jsonify({
-      "success": True
-    })
+    payload = json.dumps(request.json)
+    headers = {
+      "Content-Type": "application/json"
+    }
+    post = requests.post("http://localhost:18001/api/v0/submit-post", headers=headers ,data=payload)
+    print(post.json())
+    return jsonify(post.json())
 
 @app.route("/nft", methods=["GET"])
 def nft():
