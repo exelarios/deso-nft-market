@@ -1,11 +1,9 @@
 import { useRef } from "react";
 import { useUserContext } from "../utils/useUserContext";
 
-import { submitPost } from "../utils/api/deso";
-
 export function ListingForm(props) {
 
-  const { credentials, deso } = useUserContext()
+  const { credentials, service } = useUserContext()
   const inputRef = useRef(null);
 
   const handleOnSubmit = async (event) => {
@@ -21,10 +19,11 @@ export function ListingForm(props) {
       const request = {
         UpdaterPublicKeyBase58Check: credentials.key,
         BodyObj: { Body: value, ImageURLs: [] },
-        MinFeeRateNanosPerKB: 1
+        MinFeeRateNanosPerKB: 1500,
       };
 
-      const response = await submitPost(credentials.key, value);
+      // const response = await submitPost(credentials.key, value);
+      const response = await service.posts.submitPost(request);
       console.log(response.data);
 
       // if (response.status != "OK")

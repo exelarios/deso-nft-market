@@ -17,7 +17,10 @@ export async function submitPost(key, body) {
     Title: "",
     BodyObj: { Body: body, ImageURLs: [] },
     RecloutedPostHashHex: "",
-    PostExtraData: {},
+    PostExtraData: {
+      app: "deric-testing",
+      type: "deric-lisiting" 
+    },
     Sub: "",
     IsHidden: false,
     MinFeeRateNanosPerKB: 0

@@ -5,28 +5,31 @@ import { ListingForm } from "./components";
 
 import Deso from "deso-protocol";
 
-// I had to look into the source code to find ways to configure the library to take in a custom URI and network.
-// https://github.com/deso-protocol/deso-workspace/blob/master/libs/deso-protocol/src/index.ts
-const deso = new Deso("http://localhost:18001/api/v0");
-deso.node.setUri("http://localhost:18001/api/v0");
-deso.identity.network = "testnet";
-
 function App() {
 
   const [auth, setAuth] = useState({});
+  const [service, setService] = useState(null);
 
   const handleLogin = async () => {
-    const data = await deso.identity.login("4");
+    const data = await service.identity.login("4");
     console.log(data);
     setAuth(data);
   }
 
   const handleLogout = async () => {
-    await deso.identity.logout(auth.key);
+    await service.identity.logout(auth.key);
     setAuth({});
   }
 
   useEffect(() => {
+
+    // I had to look into the source code to find ways to configure the library to take in a custom URI and network.
+    // https://github.com/deso-protocol/deso-workspace/blob/master/libs/deso-protocol/src/index.ts
+    const deso = new Deso("http://localhost:18001/api/v0");
+    deso.node.setUri("http://localhost:18001/api/v0");
+    deso.identity.network = "testnet";
+    setService(deso);
+
     const login_key = localStorage.getItem("login_key");
     const login_user = localStorage.getItem("login_user");
 
@@ -40,10 +43,10 @@ function App() {
 
   const value = useMemo(() => {
     return {
-      deso,
+      service,
       credentials: auth
     };
-  }, [auth]);
+  }, [service, auth]);
 
   return (
     <UserContext.Provider value={value}>
