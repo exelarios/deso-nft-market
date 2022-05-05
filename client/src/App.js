@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { UserContext } from "./utils/useUserContext";
-import { ListingForm } from "./components";
+
+import { 
+  Listing, 
+  ListingForm 
+} from "./components";
 
 import Deso from "deso-protocol";
 
@@ -63,6 +67,7 @@ function App() {
               <button onClick={handleLogout}>logout</button>
               <hr />
               <ListingForm/>
+              <Listing/>
             </div>
             :
             <div>

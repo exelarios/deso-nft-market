@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { useUserContext } from "../utils/useUserContext";
 
 export function ListingForm(props) {
-
   const { credentials, service } = useUserContext()
   const inputRef = useRef(null);
 
@@ -12,34 +11,19 @@ export function ListingForm(props) {
       const value = inputRef.current.value;
       console.log(value);
 
-      // console.log(await deso.user.getSingleProfile({
-      //   "PublicKeyBase58Check": credentials.key
-      // }))
-
       const request = {
         UpdaterPublicKeyBase58Check: credentials.key,
         BodyObj: { Body: value, ImageURLs: [] },
         MinFeeRateNanosPerKB: 1500,
       };
 
-      // const response = await submitPost(credentials.key, value);
       const response = await service.posts.submitPost(request);
-      console.log(response.data);
-
-      // if (response.status != "OK")
-      //   throw new Error("Failed to get a stable response.");
-
-      // const hex = response.data.TransactionHex;
-      // console.log("TransactionHex:", hex);
-      // if (response?.data) {
-      //   const signedHex = identity.signTransaction(hex);
-      //   console.log(signedHex);
-      //   // const sendPost = await submitTransaction(signedHex);
-      //   // console.log(sendPost.data);
-      // }
-
+      if (response?.TransactionHex) {
+        alert("successfully submitted post.");
+      }
     } catch(error) {
       console.error(error);
+      alert(error.message);
     }
   }
 
