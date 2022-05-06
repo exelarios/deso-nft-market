@@ -1,44 +1,34 @@
 import axios from "axios";
+import DesoService from "deso-protocol";
 
 const Deso = axios.create({
-  baseURL: "http://127.0.0.1:5000/api",
+  baseURL: process.env.REACT_APP_DESO_NODE,
   headers: {
     "Content-Type": "application/json",
     "Accept": "application/json",
   },
 });
 
-export async function submitPost(key, body) {
-  const path = "/submit-post";
-  const data = {
-    UpdaterPublicKeyBase58Check: key,
-    PostHashHexToModify: "",
-    ParentStakeID: "",
-    Title: "",
-    BodyObj: { Body: body, ImageURLs: [] },
-    RecloutedPostHashHex: "",
-    PostExtraData: {
-      app: "deric-testing",
-      type: "deric-lisiting" 
-    },
-    Sub: "",
-    IsHidden: false,
-    MinFeeRateNanosPerKB: 0
-  }
+// I had to look into the source code to find ways to configure the library to take in a custom URI and network.
+// https://github.com/deso-protocol/deso-workspace/blob/master/libs/deso-protocol/src/index.ts
+const protocol = new DesoService(process.env.REACT_APP_DESO_NODE);
+protocol.node.setUri(process.env.REACT_APP_DESO_NODE);
+protocol.identity.network = process.env.REACT_APP_NETWORK;
 
-  return await Deso.post(path, data);
+protocol.posts.getPostsByPublicKey = async () => {
+  const publicKey = localStorage.getItem("login_key");
+  if (!publicKey)
+    throw new Error("Fail fetch public key through LocalStorage.");
+
+  console.log(publicKey);
+  
+  const path = "/get-posts-for-public-key";
+  const body = {
+    "PublicKeyBase58Check": publicKey
+  };
+
+  const response = await Deso.post(path, body);
+  return await response.data;
 }
 
-export async function submitTransaction(signedTransactionHex) {
-  if (!signedTransactionHex) {
-    console.log("signedTransactionHex is required")
-    return;
-  }
-
-  const path = "/v0/submit-transaction"
-  const data = {
-    TransactionHex : signedTransactionHex
-  }
-
-  return await Deso.post(path, data)
-}
+export default protocol;

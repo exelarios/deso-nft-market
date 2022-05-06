@@ -11,10 +11,11 @@ export function ListingForm(props) {
       const value = inputRef.current.value;
       console.log(value);
 
+      // This will return the balance in “nanos,” where 1 DeSo = 1,000,000,000 “nanos.”
       const request = {
         UpdaterPublicKeyBase58Check: credentials.key,
         BodyObj: { Body: value, ImageURLs: [] },
-        MinFeeRateNanosPerKB: 1500,
+        MinFeeRateNanosPerKB: 50,
       };
 
       const response = await service.posts.submitPost(request);

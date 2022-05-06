@@ -7,7 +7,7 @@ import {
   ListingForm 
 } from "./components";
 
-import Deso from "deso-protocol";
+import protocol from "./utils/api/deso";
 
 function App() {
 
@@ -27,12 +27,7 @@ function App() {
 
   useEffect(() => {
 
-    // I had to look into the source code to find ways to configure the library to take in a custom URI and network.
-    // https://github.com/deso-protocol/deso-workspace/blob/master/libs/deso-protocol/src/index.ts
-    const deso = new Deso("http://localhost:18001/api/v0");
-    deso.node.setUri("http://localhost:18001/api/v0");
-    deso.identity.network = "testnet";
-    setService(deso);
+    setService(protocol);
 
     const login_key = localStorage.getItem("login_key");
     const login_user = localStorage.getItem("login_user");

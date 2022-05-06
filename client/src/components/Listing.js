@@ -22,12 +22,14 @@ export function Listing() {
     });
   }, [posts]);
 
+  const getUserListing = async () => {
+    const response = await service.posts.getPostsByPublicKey();
+    console.log(response);
+    setPosts(response.Posts);
+  }
+
   useEffect(() => {
-    service.posts.getPostsStateless({})
-      .then(post => {
-        setPosts(post.PostsFound);
-        console.log(post.PostsFound);
-      });
+    getUserListing();
   }, []);
 
   return (
