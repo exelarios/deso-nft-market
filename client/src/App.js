@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { UserContext } from "./utils/useUserContext";
 
 import { 
-  Listing, 
-  ListingForm 
+  Listing
 } from "./components";
 
 import protocol from "./utils/api/deso";
@@ -97,7 +96,6 @@ function App() {
               <button onClick={handleLogout}>logout</button>
               <button onClick={onUpdateProfile}>update profile</button>
               <hr />
-              <ListingForm/>
               <Listing/>
             </div>
             :

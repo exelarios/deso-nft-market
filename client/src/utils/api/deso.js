@@ -24,7 +24,8 @@ protocol.posts.getPostsByPublicKey = async () => {
   
   const path = "v0/get-posts-for-public-key";
   const body = {
-    "PublicKeyBase58Check": publicKey
+    "PublicKeyBase58Check": publicKey,
+    "NumToFetch": 100,
   };
 
   const response = await Deso.post(path, body);
