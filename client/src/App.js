@@ -13,6 +13,7 @@ function App() {
 
   const [auth, setAuth] = useState({});
   const [service, setService] = useState(null);
+  const [nanoBalance, setNanoBalance] = useState(0);
 
   const handleLogin = async () => {
     const data = await service.identity.login("4");
@@ -23,6 +24,35 @@ function App() {
   const handleLogout = async () => {
     await service.identity.logout(auth.key);
     setAuth({});
+  }
+
+  const onUpdateProfile = async () => {
+    const payload = {
+      "UpdaterPublicKeyBase58Check": auth.key,
+      "MinFeeRateNanosPerKB": 10000,
+      "NewUsername": "dericiscool",
+      "NewDescription": "dank meemsmememems",
+      "NewStakeMultipleBasisPoints": 12500
+    }
+
+    try {
+      const response = await service.social.updateProfile(payload);
+      console.log(response);
+      alert("sucessfully updated profile");
+    } catch(error) {
+      console.error(error);
+      alert(error.message);
+    }
+
+  }
+
+  const getNanoBalance = async () => {
+    try {
+      const response = await service.user.getBalance();
+      setNanoBalance(response.ConfirmedBalanceNanos);
+    } catch(error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
@@ -39,6 +69,10 @@ function App() {
       });
     }
   }, []);
+
+  useEffect(() => {
+    getNanoBalance();
+  }, [auth])
 
   const value = useMemo(() => {
     return {
@@ -59,7 +93,9 @@ function App() {
             <div>
               <div>{auth.key}</div>
               <div>network: {auth.user.network}</div>
+              <div>balance: {nanoBalance}</div>
               <button onClick={handleLogout}>logout</button>
+              <button onClick={onUpdateProfile}>update profile</button>
               <hr />
               <ListingForm/>
               <Listing/>

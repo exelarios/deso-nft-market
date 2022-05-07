@@ -24,7 +24,6 @@ export function Listing() {
 
   const getUserListing = async () => {
     const response = await service.posts.getPostsByPublicKey();
-    console.log(response);
     setPosts(response.Posts);
   }
 
