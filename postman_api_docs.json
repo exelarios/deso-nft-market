@@ -1,0 +1,173 @@
+{
+	"info": {
+		"_postman_id": "4e408a5a-7285-49be-9a6d-08e3b3872a37",
+		"name": "Deso",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-exchange-rate",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/get-exchange-rate",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"get-exchange-rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-single-profile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"PublicKeyBase58Check\": \"BC1YLgKCqUrHmMHGmGarbKTPEZDPe1sGHiW9o9rjQwzZvn9fBpvamcg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/get-single-profile",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"get-single-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-nano-balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"PublicKeyBase58Check\": \"BC1YLgKCqUrHmMHGmGarbKTPEZDPe1sGHiW9o9rjQwzZvn9fBpvamcg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/balance",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-profile",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"UpdaterPublicKeyBase58Check\": \"BC1YLgKCqUrHmMHGmGarbKTPEZDPe1sGHiW9o9rjQwzZvn9fBpvamcg\",\n    \"MinFeeRateNanosPerKB\": 10000,\n    \"NewUsername\": \"dericislit\",\n    \"NewDescription\": \"dank meemsmememems\",\n    \"NewStakeMultipleBasisPoints\": 12500\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/update-profile",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"update-profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-nft",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"UpdaterPublicKeyBase58Check\": \"BC1YLgKCqUrHmMHGmGarbKTPEZDPe1sGHiW9o9rjQwzZvn9fBpvamcg\",\n    \"NFTPostHashHex\": \"40c91c2ed1398eb5954a3642fc05ed86f9e2cbb5c2451972e603744c4eb3e88d\",\n    \"NumCopies\": 1,\n    \"NFTRoyaltyToCreatorBasisPoints\": 50,\n    \"NFTRoyaltyToCoinBasisPoints\": 100,\n    \"HasUnlockable\": false,\n    \"IsForSale\": true,\n    \"MinBidAmountNanos\": 2000000,\n    \"IsBuyNow\": true,\n    \"BuyNowPriceNanos\": 20000000,\n    \"AdditionalDESORoyaltiesMap\": {},\n    \"AdditionalCoinRoyaltiesMap\": {},\n    \"MinFeeRateNanosPerKB\": 1000\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/create-nft",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"create-nft"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "submit-transacation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/submit-transaction",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"submit-transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://127.0.0.1:5000/api"
+		}
+	]
+}
