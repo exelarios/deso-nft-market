@@ -91,6 +91,12 @@ def submit_transaction():
       "error": "{}".format(error)
     })
 
+@app.route("/api/get-txn", methods=["POST"])
+def get_transaction():
+  body = json.dumps(request.json)
+  transaction = requests.post(baseURL + "v0/get-txn")
+  return jsonify(transaction.json())
+
 @app.route("/api/get-posts-stateless", methods=["POST"])
 def get_posts_stateless():
   try:
