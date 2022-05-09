@@ -162,4 +162,5 @@ def nft():
     "nfts": json.loads(json_data)
   })
 
-app.run(debug = not PRODUCTION)
+if __name__ == "__main__":
+  app.run(debug = not PRODUCTION, threaded=True)
