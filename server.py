@@ -162,4 +162,4 @@ def nft():
     "nfts": json.loads(json_data)
   })
 
-app.run(debug = not PRODUCTION, port = PORT)
+app.run(debug = not PRODUCTION)
