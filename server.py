@@ -16,11 +16,15 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 nfts = db["nfts"]
 
+# DeSo Node
 NODE_DESO = "https://node.deso.org"
 
-# DeSo Node
+# Deso Local Node
 NODE_LOCAL = "http://localhost:" + os.environ.get("DESO_PORT")
 baseURL = NODE_DESO + "/api"
+
+PRODUCTION = os.environ.get("PRODUCTION")
+PORT = 8080 if PRODUCTION else 5000
 
 headers = {
   "Content-Type": "application/json"
@@ -124,6 +128,17 @@ def get_posts_by_public_key():
       "error": "{}".format(error)
     })
 
+@app.route("/api/get-nfts-for-user", methods=["POST"])
+def get_nfts_for_user():
+  try:
+    body = json.dumps(request.json)
+    nfts = requests.post(baseURL + "/v0/get-nfts-for-user", headers=headers, data=body)
+    return jsonify(nfts.json())
+  except requests.exceptions.RequestException as error:
+    return jsonify({
+      "error": "{}".format(error)
+    })
+
 @app.route("/api/submit-post", methods=["POST"])
 def submit_post():
   try:
@@ -147,4 +162,4 @@ def nft():
     "nfts": json.loads(json_data)
   })
 
-app.run(debug = True, threaded=True)
+app.run(debug = not PRODUCTION, port = PORT)
