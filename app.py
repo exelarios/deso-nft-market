@@ -88,7 +88,7 @@ def create_nft():
 def submit_transaction():
   try:
     body = json.dumps(request.json)
-    transaction = requests.post(baseURL + "v0/submit-transaction")
+    transaction = requests.post(baseURL + "v0/submit-transaction", headers=headers, data=body)
     return jsonify(transaction.json())
   except requests.exceptions.RequestException as error:
     return jsonify({
