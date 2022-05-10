@@ -186,14 +186,21 @@ def submit_post():
       "error": "oh noes, something went extremely wrong."
     }), 503
 
+# Currently not tested.
 @app.route("/api/upload-image", methods=["POST"])
 def upload_image():
   try:
-    payload = json.dumps(request.json)
-    form_data_headers = {
-      "Content-Type": "multipart/form-data"
+    data = {
+      "file": request.files['file'],
+      "UserPublicKeyBase58Check": request.form["UserPublicKeyBase58Check"],
+      "JWT": request.form["JWT"]
     }
-    image = request.post(baseURL + "/v0/upload-image", headers=form_data_headers, data=payload)
+
+    form_data_headers = {
+      "Content-Type": request.headers["Content-Type"]
+    }
+
+    image = requests.post(baseURL + "/v0/upload-image", headers=form_data_headers, data=data)
     return jsonify(image.json()), image.status_code
   except requests.exceptions.RequestException as error:
     return jsonify({

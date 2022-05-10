@@ -1,7 +1,8 @@
 import axios from "axios";
 import DesoService from "deso-protocol";
 
-const DESO_NODE = "https://dezos-nuts.herokuapp.com/api";
+// const DESO_NODE = "https://dezos-nuts.herokuapp.com/api";
+const DESO_NODE = "http://127.0.0.1:5000/api";
 const DESO_NETWORK= "mainnet";
 
 const Deso = axios.create({

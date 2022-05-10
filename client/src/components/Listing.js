@@ -6,9 +6,16 @@ import {
   MintNFT
 } from ".";
 
+const imageStyling = {
+  width: 500,
+  height: 500,
+  objectFit: "cover"
+};
+
 export function Listing() {
 
   const inputRef = useRef(null);
+  const [image, setImage] = useState(null);
   const [posts, setPosts] = useState([]);
   const { credentials, service } = useUserContext();
 
@@ -21,7 +28,7 @@ export function Listing() {
           <article key={PostHashHex}>
             <p>
               id: 
-              <a 
+              <a
                 target="_blank"
                 rel="noreferrer" 
                 href={`https://explorer.deso.org/?query-node=https:%2F%2Fnode.deso.org&transaction-id=${PostHashHex}`}>
@@ -59,7 +66,10 @@ export function Listing() {
       // This will return the balance in “nanos,” where 1 DeSo = 1,000,000,000 “nanos.”
       const request = {
         UpdaterPublicKeyBase58Check: credentials.key,
-        BodyObj: { Body: value, ImageURLs: [] },
+        BodyObj: { 
+          Body: value, 
+          ImageURLs: image ? [image] : []
+        },
         MinFeeRateNanosPerKB: 1500,
       };
 
@@ -86,6 +96,24 @@ export function Listing() {
   //   setPosts(response.PostsFound);
   // }
 
+  const handleImageOnChange = async (event) => {
+    event.preventDefault();
+    const JWT = await service.identity.getJwt();
+
+    const formData = new FormData();
+    formData.append("file", event.target.files[0]);
+    formData.append("UserPublicKeyBase58Check", credentials.key);
+    formData.append("JWT", JWT);
+
+    const response = await fetch("https://node.deso.org/api/v0/upload-image", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    setImage(data.ImageURL);
+  }
+
   useEffect(() => {
     getUserListing();
     // getGlobalPosts();
@@ -102,7 +130,11 @@ export function Listing() {
           </div>
           <div>
             <label>image: </label>
-            <input ref={inputRef} type="file"/>
+            {/* <button onClick={handleImageOnChange}>upload image</button> */}
+            <input onChange={handleImageOnChange} type="file"/>
+            {image &&
+              <img style={imageStyling} alt="preview" src={image}/>
+            }
           </div>
         </fieldset>
         <input type="submit"/>
