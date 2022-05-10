@@ -2,6 +2,10 @@ import { useEffect, useState, useMemo, useRef } from "react";
 
 import { useUserContext } from "../utils/useUserContext";
 
+import {
+  MintNFT
+} from ".";
+
 export function Listing() {
 
   const inputRef = useRef(null);
@@ -10,19 +14,33 @@ export function Listing() {
 
   const listings = useMemo(() => {
     return posts && posts.map(post => {
-      const { PostHashHex, Body, ProfileEntryResponse} = post;
+      const { PostHashHex, Body, ProfileEntryResponse, ImageURLs} = post;
       return (
         <article key={PostHashHex}>
           <p>
-            id: {PostHashHex}
+            id: 
+            <a 
+              target="_blank"
+              rel="noreferrer" 
+              href={`https://explorer.deso.org/?query-node=https:%2F%2Fnode.deso.org&transaction-id=${PostHashHex}`}>
+                {PostHashHex}
+              </a>
           </p>
           <div dangerouslySetInnerHTML={{__html: Body}}></div>
+          <div style={{ display: "flex" }}>
+            {ImageURLs && ImageURLs.map(image => {
+              return (
+                <img key={PostHashHex} src={image} alt={PostHashHex} width="500"/>
+              );
+            })}
+          </div>
           {ProfileEntryResponse && 
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
               <div> posted by: {ProfileEntryResponse.Username} </div>
               <div> userPublicKey: {ProfileEntryResponse.PublicKeyBase58Check}</div>
             </div>
           }
+          <MintNFT NFTPostHashHex={PostHashHex}/>
           <hr/>
         </article>
       );
@@ -33,7 +51,6 @@ export function Listing() {
     event.preventDefault();
     try {
       const value = inputRef.current.value;
-      console.log(value);
 
       // This will return the balance in “nanos,” where 1 DeSo = 1,000,000,000 “nanos.”
       const request = {
@@ -50,7 +67,7 @@ export function Listing() {
       getUserListing();
 
     } catch(error) {
-      console.error(error);
+      console.log(error);
       alert(error.message);
     }
   }
@@ -76,13 +93,17 @@ export function Listing() {
         <fieldset>
           <legend>Create listing</legend>
           <div>
-            <label>content:</label>
+            <label>content: </label>
             <input ref={inputRef} type="text"/>
+          </div>
+          <div>
+            <label>image: </label>
+            <input ref={inputRef} type="file"/>
           </div>
         </fieldset>
         <input type="submit"/>
       </form>
-      <h3>listing</h3>
+      <h3>Your Listing</h3>
       {listings}
     </div>
   );

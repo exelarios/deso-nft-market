@@ -23,10 +23,8 @@ protocol.identity.network = DESO_NETWORK;
 protocol.posts.getPostsByPublicKey = async () => {
   const publicKey = localStorage.getItem("login_key");
   if (!publicKey)
-    throw new Error("Fail fetch public key through LocalStorage.");
+    throw new Error("Failed fetch public key through LocalStorage.");
 
-  console.log(publicKey);
-  
   const path = "/get-posts-for-public-key";
   const body = {
     "PublicKeyBase58Check": publicKey,
@@ -34,7 +32,6 @@ protocol.posts.getPostsByPublicKey = async () => {
   };
 
   const response = await Deso.post(path, body);
-  console.log(response.data);
   return response.data;
 }
 
@@ -44,9 +41,8 @@ protocol.social.updateProfile = async (request) => {
   const data = updateProfileResponse.data;
   const transactionHex = data.TransactionHex;
   if (transactionHex) {
-    console.log('hi');
     const transactionResponse = await protocol.identity.submitTransaction(transactionHex);
-    console.log(transactionResponse);
+    return transactionResponse;
   }
 }
 

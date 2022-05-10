@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { UserContext } from "./utils/useUserContext";
 
 import { 
-  Listing
+  Listing,
+  UpdateProfile
 } from "./components";
 
 import protocol from "./utils/api/deso";
@@ -12,11 +13,12 @@ function App() {
 
   const [auth, setAuth] = useState({});
   const [service, setService] = useState(null);
-  const [nanoBalance, setNanoBalance] = useState(0);
+  const [nanoBalance, setNanoBalance] = useState({});
+  const [profile, setProfile] = useState({});
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
 
   const handleLogin = async () => {
     const data = await service.identity.login("4");
-    console.log(data);
     setAuth(data);
   }
 
@@ -25,39 +27,25 @@ function App() {
     setAuth({});
   }
 
-  const onUpdateProfile = async () => {
-    const payload = {
-      "UpdaterPublicKeyBase58Check": auth.key,
-      "MinFeeRateNanosPerKB": 10000,
-      "NewUsername": "dericiscool",
-      "NewDescription": "dank meemsmememems",
-      "NewStakeMultipleBasisPoints": 12500
-    }
-
-    try {
-      const response = await service.social.updateProfile(payload);
-      console.log(response);
-      alert("sucessfully updated profile");
-    } catch(error) {
-      console.error(error);
-      alert(error.message);
-    }
-
+  const getUserProfile = async () => {
+    const request = {
+      "PublicKeyBase58Check": auth.key
+    };
+    const response = await protocol.user.getSingleProfile(request);
+    setProfile(response.Profile);
   }
 
   const getNanoBalance = async () => {
     try {
-      const response = await service.user.getBalance();
-      setNanoBalance(response.ConfirmedBalanceNanos);
+      const response = await protocol.user.getBalance();
+      setNanoBalance(response);
     } catch(error) {
-      console.error(error);
+      console.log(error);
     }
   }
 
   useEffect(() => {
-
     setService(protocol);
-
     const login_key = localStorage.getItem("login_key");
     const login_user = localStorage.getItem("login_user");
 
@@ -71,6 +59,7 @@ function App() {
 
   useEffect(() => {
     getNanoBalance();
+    getUserProfile();
   }, [auth])
 
   const value = useMemo(() => {
@@ -91,10 +80,27 @@ function App() {
           {auth?.key ?
             <div>
               <div>{auth.key}</div>
+              {profile ?
+                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                  username: {profile.Username} <br/>
+                  description: {profile.Description}
+                </div>
+                :
+                <div>
+                  couldn't find profile
+                </div>
+              }
               <div>network: {auth.user.network}</div>
-              <div>balance: {nanoBalance}</div>
+              <div>nanos: {nanoBalance.ConfirmedBalanceNanos}</div>
+              <div>pending_nanos: {nanoBalance.UnconfirmedBalanceNanos}</div>
               <button onClick={handleLogout}>logout</button>
-              <button onClick={onUpdateProfile}>update profile</button>
+              <button 
+                onClick={() => {setProfileModalOpen(!isProfileModalOpen)}}>
+                {isProfileModalOpen ? "close edit profile" : "edit profile"}
+              </button>
+              {isProfileModalOpen &&
+                <UpdateProfile/>
+              }
               <hr />
               <Listing/>
             </div>
@@ -105,6 +111,7 @@ function App() {
           }
         </div>
       </div>
+      <div style={{ marginTop: "10px" }}>built by team 8</div>
     </UserContext.Provider>
   );
 }
