@@ -39,13 +39,16 @@ export function Listing() {
       const request = {
         UpdaterPublicKeyBase58Check: credentials.key,
         BodyObj: { Body: value, ImageURLs: [] },
-        MinFeeRateNanosPerKB: 50,
+        MinFeeRateNanosPerKB: 1500,
       };
 
       const response = await service.posts.submitPost(request);
       if (response?.TransactionHex) {
         alert("successfully submitted post.");
       }
+
+      getUserListing();
+
     } catch(error) {
       console.error(error);
       alert(error.message);
@@ -57,10 +60,10 @@ export function Listing() {
     setPosts(response.Posts);
   }
 
-  const getGlobalPosts = async () => {
-    const response = await service.posts.getPostsStateless({});
-    setPosts(response.PostsFound);
-  }
+  // const getGlobalPosts = async () => {
+  //   const response = await service.posts.getPostsStateless({});
+  //   setPosts(response.PostsFound);
+  // }
 
   useEffect(() => {
     getUserListing();
