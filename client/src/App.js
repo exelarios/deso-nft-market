@@ -4,10 +4,17 @@ import { UserContext } from "./utils/useUserContext";
 
 import { 
   Listing,
-  UpdateProfile
+  UpdateProfile,
+  NFTListing
 } from "./components";
 
 import protocol from "./utils/api/deso";
+
+const py = { 
+  marginTop: "10px", 
+  marginBottom: "10px" 
+};
+
 
 function App() {
 
@@ -16,6 +23,7 @@ function App() {
   const [nanoBalance, setNanoBalance] = useState({});
   const [profile, setProfile] = useState({});
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [currentTab, setCurrentTab] = useState("posts");
 
   const handleLogin = async () => {
     const data = await service.identity.login("4");
@@ -81,7 +89,7 @@ function App() {
             <div>
               <div>{auth.key}</div>
               {profile ?
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                <div style={py}>
                   username: {profile.Username} <br/>
                   description: {profile.Description}
                 </div>
@@ -102,7 +110,18 @@ function App() {
                 <UpdateProfile/>
               }
               <hr />
-              <Listing/>
+              <div style={py}>
+                Tabs <br/>
+                <button onClick={() => setCurrentTab("posts")}>
+                  your listing
+                </button>
+                <button onClick={() => setCurrentTab("nfts")}>
+                  your nfts
+                </button>
+              </div>
+              {currentTab === "posts" ? 
+                <Listing/> : <NFTListing/>
+              }
             </div>
             :
             <div>

@@ -32,12 +32,12 @@ export function MintNFT(props) {
       };
 
       const response = await service.nft.createNft(request);
-      if (response?.TransactionHex) {
+      if (response.TransactionHex) {
         alert("successfully submitted minited nft");
       }
-
+      
     } catch(error) {
-      console.log(error);
+      console.error(error);
       alert(error.message);
     }
 
