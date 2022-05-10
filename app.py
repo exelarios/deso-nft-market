@@ -186,6 +186,24 @@ def submit_post():
       "error": "oh noes, something went extremely wrong."
     }), 503
 
+@app.route("/api/upload-image", methods=["POST"])
+def upload_image():
+  try:
+    payload = json.dumps(request.json)
+    form_data_headers = {
+      "Content-Type": "multipart/form-data"
+    }
+    image = request.post(baseURL + "/v0/upload-image", headers=form_data_headers, data=payload)
+    return jsonify(image.json()), image.status_code
+  except requests.exceptions.RequestException as error:
+    return jsonify({
+      "error": "{}".format(error)
+    }), image.status_code
+  except:
+    return jsonify({
+      "error": "oh noes, something went extremely wrong."
+    }), 503
+
 # Not a real endpoint, just for testing mongodb.
 @app.route("/nft", methods=["GET"])
 def nft():
