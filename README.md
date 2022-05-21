@@ -18,4 +18,4 @@ Zane Reis
 
 ### Running
 - Activate the enviroment: `. venv/bin/activate`
-- Run Server: `python3 server.py`
+- Run Server: `python3 app.py`
