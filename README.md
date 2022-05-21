@@ -1,7 +1,7 @@
 # DeSo NFT Marketplace
 
 This project is for CS 4800 (Software Engineering). Our team is responsible for creating the RESTful API that bridges communication to the database.
-Deric Kwok
+Deric Kwok<br>
 Roy Amador
 Eldrin Pile
 Abdur Rahman
