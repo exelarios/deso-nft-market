@@ -1,11 +1,11 @@
 # DeSo NFT Marketplace
 
-This project is for CS 4800 (Software Engineering). Our team is responsible for creating the RESTful API that bridges communication to the database.
+This project is for CS 4800 (Software Engineering). Our team is responsible for creating the RESTful API that bridges communication to the database.<br>
 Deric Kwok<br>
-Roy Amador
-Eldrin Pile
-Abdur Rahman
-Zane Reis
+Roy Amador<br>
+Eldrin Pile<br>
+Abdur Rahman<br>
+Zane Reis<br>
 
 ### Prerequisites
 - Python 3
